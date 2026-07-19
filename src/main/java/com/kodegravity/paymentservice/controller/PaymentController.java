@@ -17,7 +17,7 @@ import java.util.Map;
 public class PaymentController {
     private final PaymentService paymentService;
 
-    @Value("${stripe.publishable.key}")
+    @Value("${stripe.publishable.key:}")
     private String stripePublishableKey;
 
     public PaymentController(PaymentService paymentService) {
@@ -36,8 +36,8 @@ public class PaymentController {
     @GetMapping("/debug")
     public Map<String, String> debug() {
         Map<String, String> response = new HashMap<>();
-        response.put("stripePublishableKey", stripePublishableKey != null ? stripePublishableKey : "NULL - KEY NOT LOADED");
-        response.put("message", "Check if stripe.publishable.key is in application.yml");
+        response.put("stripePublishableKey", stripePublishableKey != null && !stripePublishableKey.isEmpty() ? stripePublishableKey : "NULL - KEY NOT LOADED");
+        response.put("message", "Check if stripe.publishable.key is in application.properties");
         return response;
     }
 
