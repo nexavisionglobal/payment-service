@@ -10,11 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class StripeService {
 
-    @Value("${stripe.api.key}")
+    @Value("${stripe.api.key:}")
     private String stripeApiKey;
 
     // CREATE PAYMENT INTENT
     public String createPaymentIntent(Long amount, String currency) throws StripeException {
+        if (stripeApiKey == null || stripeApiKey.isEmpty()) {
+            throw new StripeException("Stripe API key not configured");
+        }
         Stripe.apiKey = stripeApiKey;
 
         PaymentIntentCreateParams params =
@@ -29,6 +32,9 @@ public class StripeService {
 
     // CONFIRM PAYMENT INTENT
     public PaymentIntent confirmPaymentIntent(String paymentIntentId) throws StripeException {
+        if (stripeApiKey == null || stripeApiKey.isEmpty()) {
+            throw new StripeException("Stripe API key not configured");
+        }
         Stripe.apiKey = stripeApiKey;
         return PaymentIntent.retrieve(paymentIntentId);
     }
