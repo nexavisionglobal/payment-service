@@ -24,20 +24,20 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    // GET STRIPE PUBLIC KEY
-    @GetMapping("/stripe-key")
-    public Map<String, String> getStripeKey() {
-        Map<String, String> response = new HashMap<>();
-        response.put("publishableKey", stripePublishableKey);
-        return response;
-    }
-
-    // DEBUG ENDPOINT
+    // DEBUG ENDPOINT - MUST BE BEFORE /{id}
     @GetMapping("/debug")
     public Map<String, String> debug() {
         Map<String, String> response = new HashMap<>();
         response.put("stripePublishableKey", stripePublishableKey != null && !stripePublishableKey.isEmpty() ? stripePublishableKey : "NULL - KEY NOT LOADED");
         response.put("message", "Check if stripe.publishable.key is in application.properties");
+        return response;
+    }
+
+    // GET STRIPE PUBLIC KEY
+    @GetMapping("/stripe-key")
+    public Map<String, String> getStripeKey() {
+        Map<String, String> response = new HashMap<>();
+        response.put("publishableKey", stripePublishableKey);
         return response;
     }
 
